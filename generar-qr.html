@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generar QR — Nutrición</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <!-- QR library CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sage: #7a9e7e; --sage-dk: #4d7a53; --cream: #faf8f3;
+      --beige: #e8e0d0; --text: #2e2a24; --muted: #9e9082;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; }
+    h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; text-align: center; margin-bottom: 6px; }
+    h1 span { color: var(--sage-dk); }
+    .sub { color: var(--muted); font-size: .9rem; text-align: center; margin-bottom: 32px; }
+    .card { background: #fff; border-radius: 20px; padding: 28px 24px; box-shadow: 0 8px 32px rgba(74,90,64,.12); width: 100%; max-width: 400px; }
+    label { display: block; font-size: .8rem; font-weight: 500; color: var(--sage-dk); margin-bottom: 6px; letter-spacing: .04em; text-transform: uppercase; }
+    input[type=text] {
+      width: 100%; border: 1.5px solid var(--beige); border-radius: 10px;
+      padding: 12px 14px; font-family: inherit; font-size: .95rem; color: var(--text);
+      background: var(--cream); outline: none; transition: border-color .2s;
+    }
+    input[type=text]:focus { border-color: var(--sage); }
+    button {
+      width: 100%; margin-top: 14px;
+      background: var(--sage-dk); color: #fff;
+      border: none; border-radius: 10px; padding: 13px;
+      font-family: inherit; font-size: .95rem; font-weight: 500;
+      cursor: pointer; transition: background .2s;
+    }
+    button:hover { background: #3d6142; }
+    #qr-output { margin-top: 28px; display: none; flex-direction: column; align-items: center; gap: 14px; }
+    #qr-box { background: #fff; padding: 16px; border-radius: 12px; border: 2px solid var(--beige); }
+    #qr-box canvas, #qr-box img { display: block !important; }
+    .dl-btn {
+      background: var(--sage); color: #fff; border: none; border-radius: 8px;
+      padding: 10px 22px; font-family: inherit; font-size: .85rem; font-weight: 500;
+      cursor: pointer; text-decoration: none; display: inline-block;
+    }
+    .note { font-size: .75rem; color: var(--muted); text-align: center; line-height: 1.6; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<h1>Genera tu <span>Código QR</span></h1>
+<p class="sub">Introduce la URL de tu web publicada y obtén el QR listo para imprimir.</p>
+
+<div class="card">
+  <label for="url-input">URL de tu web</label>
+  <input type="text" id="url-input" placeholder="https://tuusuario.github.io/nutricion-web/" value="" />
+  <button onclick="generateQR()">🔗 Generar código QR</button>
+
+  <div id="qr-output">
+    <div id="qr-box"></div>
+    <a class="dl-btn" id="dl-link" download="qr-nutricion.png">⬇️ Descargar QR (PNG)</a>
+    <p class="note">Descarga el QR y pégalo en tus materiales,<br/>consultas o redes sociales.</p>
+  </div>
+</div>
+
+<script>
+let qrInstance = null;
+
+function generateQR() {
+  const url = document.getElementById('url-input').value.trim();
+  if (!url) { alert('Por favor introduce una URL.'); return; }
+
+  const box = document.getElementById('qr-box');
+  box.innerHTML = '';
+  if (qrInstance) { qrInstance.clear(); qrInstance = null; }
+
+  qrInstance = new QRCode(box, {
+    text: url,
+    width: 240,
+    height: 240,
+    colorDark: '#2e2a24',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+
+  document.getElementById('qr-output').style.display = 'flex';
+
+  // Enable download after QR renders
+  setTimeout(() => {
+    const canvas = box.querySelector('canvas');
+    if (canvas) {
+      document.getElementById('dl-link').href = canvas.toDataURL('image/png');
+    }
+  }, 300);
+}
+
+// Allow Enter key
+document.getElementById('url-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') generateQR();
+});
+</script>
+</body>
+</html>

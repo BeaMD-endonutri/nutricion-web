@@ -1,0 +1,21 @@
+AÑADE AQUÍ TUS IMÁGENES DE DESAYUNOS
+=====================================
+
+Formatos soportados: .jpg, .jpeg, .png, .webp, .gif
+
+Después de añadir las imágenes, abre el archivo:
+  desayunos/index.html
+
+Busca esta sección (línea ~30):
+  images: [
+    // Ejemplo: 'tostadas-aguacate.jpg',
+  ]
+
+Y añade el nombre exacto de cada imagen, por ejemplo:
+  images: [
+    'tostadas-aguacate.jpg',
+    'bowl-frutas.jpg',
+    'avena-platano.jpg',
+  ]
+
+¡Guarda el archivo y listo!

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nutrición — Tu Guía de Comidas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #faf8f3;
+      --white:   #ffffff;
+      --sage:    #7a9e7e;
+      --sage-lt: #b5ceb7;
+      --sage-dk: #4d7a53;
+      --beige:   #e8e0d0;
+      --brown:   #7c6e5e;
+      --text:    #2e2a24;
+      --muted:   #9e9082;
+      --radius:  20px;
+      --shadow:  0 8px 32px rgba(74,90,64,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BACKGROUND DECORATION ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 10% 20%, rgba(181,206,183,.25) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 90% 80%, rgba(232,224,208,.40) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 52px 24px 32px;
+    }
+
+    .logo-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--white);
+      border: 1px solid var(--beige);
+      border-radius: 999px;
+      padding: 6px 16px 6px 10px;
+      font-size: .78rem; font-weight: 500;
+      color: var(--sage-dk); letter-spacing: .04em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(74,90,64,.08);
+    }
+    .logo-pill svg { width: 18px; height: 18px; }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 7vw, 3rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.15;
+    }
+    header h1 span { color: var(--sage-dk); }
+
+    header p {
+      margin-top: 10px;
+      font-size: 1rem; font-weight: 300;
+      color: var(--muted); max-width: 340px; margin-inline: auto;
+      line-height: 1.6;
+    }
+
+    .divider {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--sage), var(--sage-lt));
+      border-radius: 4px;
+      margin: 18px auto 0;
+    }
+
+    /* ── GRID ── */
+    .grid {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 8px 20px 40px;
+      max-width: 520px; margin-inline: auto;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      display: flex; flex-direction: column;
+      transition: transform .25s ease, box-shadow .25s ease;
+      border: 1px solid rgba(255,255,255,.8);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card:hover, .card:active {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 16px 40px rgba(74,90,64,.18);
+    }
+
+    .card-img {
+      aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+      position: relative; overflow: hidden;
+    }
+    .card-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,.08));
+    }
+
+    .card-body {
+      padding: 14px 16px 16px;
+    }
+    .card-body h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--text);
+    }
+    .card-body p {
+      font-size: .78rem; color: var(--muted);
+      margin-top: 3px; font-weight: 300;
+    }
+    .card-arrow {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-top: 10px;
+      font-size: .75rem; font-weight: 500;
+      color: var(--sage-dk); letter-spacing: .02em;
+    }
+    .card-arrow svg { width: 13px; height: 13px; transition: transform .2s; }
+    .card:hover .card-arrow svg { transform: translateX(3px); }
+
+    /* ── CARD COLORS ── */
+    .card-desayunos .card-img { background: linear-gradient(135deg, #fef9e7, #fde68a); }
+    .card-almuerzos .card-img { background: linear-gradient(135deg, #ecfdf5, #a7f3d0); }
+    .card-meriendas .card-img { background: linear-gradient(135deg, #fdf2f8, #f9a8d4); }
+    .card-cenas     .card-img { background: linear-gradient(135deg, #eff6ff, #bfdbfe); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 0 24px 48px;
+      font-size: .75rem; color: var(--muted);
+      font-weight: 300;
+    }
+    footer strong { color: var(--sage-dk); font-weight: 500; }
+
+    /* ── FADE IN ── */
+    .card { animation: fadeUp .5s ease both; }
+    .card:nth-child(1) { animation-delay: .05s; }
+    .card:nth-child(2) { animation-delay: .12s; }
+    .card:nth-child(3) { animation-delay: .19s; }
+    .card:nth-child(4) { animation-delay: .26s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    header { animation: fadeUp .4s ease both; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-pill">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 6v6l4 2"/></svg>
+    Tu nutricionista
+  </div>
+  <h1>Guía de<br/><span>Alimentación</span></h1>
+  <p>Explora tus opciones de comida organizadas por momento del día.</p>
+  <div class="divider"></div>
+</header>
+
+<main class="grid">
+
+  <a class="card card-desayunos" href="desayunos/index.html">
+    <div class="card-img">🌅</div>
+    <div class="card-body">
+      <h2>Desayunos</h2>
+      <p>Empieza el día con energía</p>
+      <span class="card-arrow">Ver ideas
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+  </a>
+
+  <a class="card card-almuerzos" href="almuerzos/index.html">
+    <div class="card-img">☀️</div>
+    <div class="card-body">
+      <h2>Almuerzos</h2>
+      <p>Comidas nutritivas y completas</p>
+      <span class="card-arrow">Ver ideas
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+  </a>
+
+  <a class="card card-meriendas" href="meriendas/index.html">
+    <div class="card-img">🍎</div>
+    <div class="card-body">
+      <h2>Meriendas</h2>
+      <p>Snacks saludables y ricos</p>
+      <span class="card-arrow">Ver ideas
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+  </a>
+
+  <a class="card card-cenas" href="cenas/index.html">
+    <div class="card-img">🌙</div>
+    <div class="card-body">
+      <h2>Cenas</h2>
+      <p>Cenas ligeras y reconfortantes</p>
+      <span class="card-arrow">Ver ideas
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+  </a>
+
+</main>
+
+<footer>
+  Diseñado con ❤️ para tus pacientes · <strong>Edita las imágenes en /img/</strong>
+</footer>
+
+</body>
+</html>
